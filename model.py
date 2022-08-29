@@ -1,4 +1,5 @@
 import random
+import json
 
 ST_POSKUSOV = 12
 ST_BARV = 6
@@ -10,6 +11,8 @@ PRAV = 'R'
 SKORAJ = 'B'
 NAROBE = 'C'
 KODIRNO_PRAŠTEVILO = 5915587277
+DATOTEKA_S_STANJEM = "stanje.json"
+ZACETEK = 'zacetek'
 
 class Igra:
 
@@ -23,23 +26,28 @@ class Igra:
     def nov_poskus(self, poskus):
         self.poskusi += poskus
         self.namigi += namig(self.resitev, poskus)
-        if poskus == self.resitev:
+        if self.zmaga():
             return ZMAGA
-        elif len(self.poskusi) >= self.dovoljeno:
+        elif self.poraz():
             return PORAZ
         else:
             return NADALJUJ
 
+    def zmaga(self):
+        return self.resitev in self.poskusi
+
+    def poraz(self):
+        return len(self.poskusi)> self.dovoljeno
+
+
 def namig(resitev, poskus):
     namig = ''
-    seznam = ''
     for n in range(len(resitev)):
         if resitev[n] == poskus[n]:
             namig += PRAV
             seznam += poskus[n]
-        elif resitev.count(poskus[n]) > seznam.count(poskus[n]):
+        elif poskus[n] in resitev:
             namig += SKORAJ
-            seznam += poskus[n]
         else:
             namig += NAROBE
     return sorted(namig)
@@ -63,3 +71,39 @@ def nova_igra(dol_kode, st_barv,st_poskusov, seme = None):
         koda = desifriraj_seme(seme)
     return Igra(koda, st_barv, st_poskusov)
     
+class MasterMind:
+    datoteka_s_stanjem = DATOTEKA_S_STANJEM
+
+    def __init__(self):
+        self.igre = {}
+
+    def prost_id_igre(self):
+        id = random.randint()
+        while id in self.igre:
+            id = random.randint()
+        return id
+
+    def nova_igra(self):
+        i = self.prost_id_igre()
+        igra = nova_igra()
+        self.igre[i] = (igra, ZACETEK)
+        return i
+
+    def ugibaj(self, i, poskus):
+        igra, stanje = self.igre[i]
+        stanje = igra.nov_poskus(poskus)
+        self.igre[i] = (igra, stanje)
+
+    def nalozi_igre_iz_datoteke(self):
+        with open(self.datoteka_s_stanjem) as d:
+            slovar = json.load(d)
+        for id_igre, ((resitev, poskusi), namigi, barve, dovoljeno, stanje) in slovar.items():
+            self.igre[id_igre] = (Igra(resitev, barve, dovoljeno, poskusi, namigi), stanje)
+
+
+    def zapisi_igre_v_datoteko(self):
+        slovar = {}
+        for id_igre, (igra, stanje)  in self.igre.items():
+            slovar[id_igre] = ((igra.resitev, igra.poskusi), igra.namigi, igra.barve, igra.dovoljeno, stanje)
+        with open(self.datoteka_s_stanjem, 'w') as d:
+            json.dump(slovar, d)
