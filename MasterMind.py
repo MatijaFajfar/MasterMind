@@ -11,8 +11,16 @@ def indeks():
 def nova_igra():
     id_igre = mastermind.nova_igra()
     mastermind.zapisi_igre_v_datoteko()
-    bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST) #path je da se piškotek zapomni za vse strani
+    bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
     return bottle.redirect("/igra/")
+
+@bottle.post("/pomoc/") 
+def pomoc():
+  return bottle.template("pomoc")
+
+@bottle.post("/") 
+def index():
+  return bottle.template("index")
 
 @bottle.get("/igra/")
 def pokazi_igro():

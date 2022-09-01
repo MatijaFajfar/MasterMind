@@ -1,12 +1,10 @@
-%rebase('base.tpl', title='Vislice')
+%rebase('base.tpl', title='MasterMind')
 
   <blockquote>
-    MasterMind je odlična igrica za amaterske kriptografe.
+    MasterMind je odlična igrica za amaterske kriptografe. <br/>
     <small>Študentje</small>
   </blockquote>
 
   <img src="/img/normalno.jpg" alt="2Ring">
 
-  <form action="/nova_igra/" method="post">
-    <button type="submit">Nova igra</button>
   </form>
