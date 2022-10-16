@@ -4,13 +4,14 @@ import json
 ST_POSKUSOV = 11
 STEVILKE = 6
 DOL_KODE = 4
-ZMAGA = 'O'
-PORAZ = 'X'
+ZMAGA = 'ZMAGA'
+PORAZ = 'PORAZ'
 NADALJUJ = 'I'
-PRAV = 'R'
-SKORAJ = 'B'
-NAROBE = 'C'
-KODIRNO_PRAŠTEVILO = 5915587277
+PRAV = 'P'
+SKORAJ = 'N'
+NAROBE = 'X'
+KODIRNO_ŠTEVILO_1 = 5915587277
+KODIRNO_ŠTEVILO_2 = 42
 DATOTEKA_S_STANJEM = "stanje.json"
 ZACETEK = 'ZACETEK'
 JA = 'JA'
@@ -53,8 +54,8 @@ class Igra:
 
 def namig(resitev, poskus):
     namig = ""
-    for n in range(len(resitev)):
-        if resitev[n] == poskus[n]:
+    for n in range(len(str(resitev))):
+        if str(resitev)[n] == poskus[n]:
             namig += PRAV
         elif poskus[n] in resitev and resitev[n] != poskus[n]:
             namig += SKORAJ
@@ -66,13 +67,13 @@ def namig(resitev, poskus):
 
 def produkt(resitev):
     k = 1
-    for n in resitev:
+    for n in str(resitev):
         k *= int(n)
     return k
 
 def vsota(resitev):
     k = 0
-    for n in resitev:
+    for n in str(resitev):
         k += int(n)
     return k
 
@@ -83,12 +84,13 @@ def random_koda(dol_kode, st_stevilk):
     return koda
 
 def sifriraj_seme(koda):
-    return koda * KODIRNO_PRAŠTEVILO
+    return int(koda) * KODIRNO_ŠTEVILO_1 + KODIRNO_ŠTEVILO_2
 
-def desifriraj_seme(seme): 
-    return seme // KODIRNO_PRAŠTEVILO
+def desifriraj_seme(seme):
+    return str((int(seme) - KODIRNO_ŠTEVILO_2) // KODIRNO_ŠTEVILO_1)
 
-def nova_igra(st_stevilk, variacija, dol_kode = 4, seme = None):
+
+def nova_igra(st_stevilk, variacija, seme = None, dol_kode = 4):
     if seme == None:
         koda = random_koda(dol_kode, st_stevilk)
     else:
@@ -107,9 +109,9 @@ class MasterMind:
             id = random.randint()
         return id
 
-    def nova_igra(self, st_cifer, variacija = NE):
+    def nova_igra(self, st_cifer, variacija = NE, seme = None):
         i = self.prost_id_igre()
-        igra = nova_igra(st_cifer, variacija)
+        igra = nova_igra(st_cifer, variacija, seme)
         self.igre[i] = (igra, ZACETEK, variacija)
         return i
 
