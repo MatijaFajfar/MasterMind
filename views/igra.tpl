@@ -73,6 +73,6 @@
       <p> Moj nasvet za to rundo je tak: vsota števk v rešitvi je enaka {{vsota}}.
     %else:
     <img src="/img/normalno.jpg" alt="2Ring">
-      <p> Ne pozabi, imaš {{dovoljeno}} poskusov, v rešitvi pa so le številke od 0 do {{stevilke}}
+      <p> Ne pozabi, imaš {{dovoljeno + 1}} poskusov, v rešitvi pa so številke od 0 do {{stevilke}}
   </div>
 </div>

@@ -18,6 +18,20 @@ def nova_igra():
     bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
     return bottle.redirect("/igra/")
 
+@bottle.post("/srednja_igra/") 
+def nova_igra():
+    id_igre = mastermind.nova_igra(LAHKA_IGRA)
+    mastermind.zapisi_igre_v_datoteko()
+    bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
+    return bottle.redirect("/igra/")
+
+@bottle.post("/tezja_igra/") 
+def nova_igra():
+    id_igre = mastermind.nova_igra(TEZKA_IGRA)
+    mastermind.zapisi_igre_v_datoteko()
+    bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
+    return bottle.redirect("/igra/")
+
 @bottle.post("/pomoc/") 
 def pomoc():
   return bottle.template("pomoc")

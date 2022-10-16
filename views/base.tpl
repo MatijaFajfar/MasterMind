@@ -23,8 +23,8 @@
     <button type="submit">Težja igra</button>
     </form>
   
-  <form action="/variacija/" method="post">
-    <button type="submit">Varianta</button>
+  <form action="/seme/" method="post">
+    <button type="submit">Seme</button>
     </form>
 
   <form action="/pomoc/" method="post">
