@@ -5,17 +5,27 @@
 }
 
 
+img {
+  width: 100%;
+  height: auto;
+}
+
 .column {
   float: left;
   padding: 10px;
-  height: 600px; /* Should be removed. Only for demonstration */
+  height: auto;
+  font-size:40px
 }
 <!
 .left {
-  width: 35%;
+  width: 40%;
 }
 
 .right {
+  width: 25%;
+}
+.middle {
+  padding: 55px;
   width: 35%;
 }
 >
@@ -27,9 +37,9 @@
 </style>
 
 <body>
-<h2>Igralna plošča</h2>
+<h1>Igralna plošča</h1>
 <div class="row">
-  <div class="column" style="background-color:gray;">
+  <div class="column left" style="background-color:gray;">
     <p>
 
     % for poskus in poskusi:
@@ -50,7 +60,7 @@
 
     
   </div>
-  <div class="column" style="background-color:gray;">
+  <div class="column middle" style="background-color:gray;">
     % for namig in namigi:
         {{namig}} <br>
     % end
