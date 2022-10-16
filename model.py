@@ -109,9 +109,9 @@ class MasterMind:
             id = random.randint()
         return id
 
-    def nova_igra(self, st_cifer, variacija = NE, seme = None):
+    def nova_igra(self, st_cifer, variacija = NE, seme = None, dol_kode = 4):
         i = self.prost_id_igre()
-        igra = nova_igra(st_cifer, variacija, seme)
+        igra = nova_igra(st_cifer, variacija, seme, dol_kode)
         self.igre[i] = (igra, ZACETEK, variacija)
         return i
 
@@ -125,8 +125,6 @@ class MasterMind:
             slovar = json.load(d)
         for id_igre, ((resitev, poskusi), namigi, st_stevilk, dovoljeno, variacija, stanje) in slovar.items():
             self.igre[id_igre] = (Igra(resitev, st_stevilk, dovoljeno, poskusi, namigi), stanje, variacija)
-
-    
 
     def zapisi_igre_v_datoteko(self):
         slovar = {}
