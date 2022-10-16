@@ -9,7 +9,7 @@
   <nav>
   <form action="/" method="post">
     <button type="submit">Meni</button>
-    </form>
+  </form>
 
   <form action="/lahka_igra/" method="post">
     <button type="submit">Lahka igra</button>

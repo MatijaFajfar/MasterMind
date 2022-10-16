@@ -1,15 +1,19 @@
 import bottle, model
 
 SKRIVNOST = 'Bruce Wayne je Batman'
+LAHKA_IGRA = 6
+TEZKA_IGRA = 9
 
-mastermind = model.MasterMind
+mastermind = model.MasterMind()
+mastermind.nalozi_igre_iz_datoteke()
+
 @bottle.get("/")
 def indeks():
     return bottle.template("views/index.tpl")
 
-@bottle.post("/nova_igra/") 
+@bottle.post("/lahka_igra/") 
 def nova_igra():
-    id_igre = mastermind.nova_igra()
+    id_igre = mastermind.nova_igra(LAHKA_IGRA)
     mastermind.zapisi_igre_v_datoteko()
     bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
     return bottle.redirect("/igra/")
@@ -30,16 +34,16 @@ def pokazi_igro():
     poskusi = igra.poskusi
     namigi = igra.namigi
     dovoljeno = igra.dovoljeno
-    barve = igra.barve
-    return bottle.template("views/igra.tpl", {'resitev': resitev,'stanje': stanje, 'poskusi': poskusi, 'namigi': namigi, 'dovoljeno': dovoljeno, 'barve': barve})
+    stevilke = igra.stevilke
+    return bottle.template("views/igra.tpl", {'resitev': resitev,'stanje': stanje,'model': model, 'poskusi': poskusi, 'namigi': namigi, 'dovoljeno': dovoljeno, 'stevilke': stevilke})
 
 @bottle.post("/igra/")
 def ugibaj():
     id_igre = bottle.request.get_cookie('id_igre', secret = SKRIVNOST)
     resitev = bottle.request.get_cookie('resitev', secret = SKRIVNOST)
-    poskus = bottle.request.forms.poskus #praša če je kej pršlo in če je naj da crko
-    if len(poskus) == len(resitev)  and poskus.isnumeric():
-        mastermind.ugibaj(id_igre, poskus)
+    koda = bottle.request.forms.koda
+    if len(str(koda)) == len(str(resitev)) and koda.isnumeric():
+        mastermind.ugibaj(id_igre, koda)
     mastermind.zapisi_igre_v_datoteko()
     return bottle.redirect("/igra/")
 
@@ -47,4 +51,4 @@ def ugibaj():
 def slika(picture):
     return bottle.static_file(picture, root="img")
 
-bottle.run(reloader=True, debug=True)
+bottle.run(reloader = True, debug = True)
