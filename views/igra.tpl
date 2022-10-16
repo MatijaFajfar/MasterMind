@@ -56,7 +56,23 @@
     % end
   </div>
   <div class="column right" style="background-color:#654321;">
+    %if stanje == model.ZMAGA and len(poskusi) <= 6:
     <img src="/img/normalno.jpg" alt="2Ring">
-    <p>Some text..</p>
+      <p> Bravo! Presenečen sem, kako dobro ti je šlo. Sam zmorem vsako kodo rešiti tako hitro, zato predlagam, da poskusiš še kakšno igro in se še bolj izuriš. </p>
+    %elif stanje == model.ZMAGA:
+    <img src="/img/normalno.jpg" alt="2Ring">
+      <p> Super! Uspelo ti je v {{len(poskusi)}} poskusih! Poskusi to izboljšati z igranjem še ene igre! </p>
+    %elif stanje == model.PORAZ:
+    <img src="/img/zalostno.jpg" alt="2Ring">
+      <p> Srce se mi para, ko vidim tak poraz. Ne krivim tebe, ampak svoje učiteljske sposobnosti. Ponovno preberi navodila, nato pa predlagam ponoven poskus. </p>
+    %elif len(poskusi) == 3 * int(dovoljeno) // 4:
+    <img src="/img/normalno.jpg" alt="2Ring">
+      <p> Ne ostaja ti veliko poskusov, zato izvoli namig. Zmnožek cifer v kodi je enak {{produkt}}. </p>
+    %elif variacija == model.JA:
+    <img src="/img/normalno.jpg" alt="2Ring">
+      <p> Moj nasvet za to rundo je tak: vsota števk v rešitvi je enaka {{vsota}}.
+    %else:
+    <img src="/img/normalno.jpg" alt="2Ring">
+      <p> Ne pozabi, imaš {{dovoljeno}} poskusov, v rešitvi pa so le številke od 0 do {{stevilke}}
   </div>
 </div>

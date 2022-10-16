@@ -13,7 +13,7 @@ def indeks():
 
 @bottle.post("/lahka_igra/") 
 def nova_igra():
-    id_igre = mastermind.nova_igra(LAHKA_IGRA)
+    id_igre = mastermind.nova_igra(LAHKA_IGRA, model.JA)
     mastermind.zapisi_igre_v_datoteko()
     bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
     return bottle.redirect("/igra/")
@@ -29,13 +29,15 @@ def index():
 @bottle.get("/igra/")
 def pokazi_igro():
     id_igre = bottle.request.get_cookie('id_igre', secret = SKRIVNOST)
-    igra, stanje = mastermind.igre[id_igre]
+    igra, stanje, variacija = mastermind.igre[id_igre]
     resitev = igra.resitev
     poskusi = igra.poskusi
     namigi = igra.namigi
     dovoljeno = igra.dovoljeno
     stevilke = igra.stevilke
-    return bottle.template("views/igra.tpl", {'resitev': resitev,'stanje': stanje,'model': model, 'poskusi': poskusi, 'namigi': namigi, 'dovoljeno': dovoljeno, 'stevilke': stevilke})
+    produkt = igra.produkt
+    vsota = igra.vsota
+    return bottle.template("views/igra.tpl", {'resitev': resitev,'stanje': stanje,'model': model, 'poskusi': poskusi, 'namigi': namigi, 'dovoljeno': dovoljeno, 'stevilke': stevilke, 'produkt': produkt, 'vsota': vsota, 'variacija': variacija}) 
 
 @bottle.post("/igra/")
 def ugibaj():
