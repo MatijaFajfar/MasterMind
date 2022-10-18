@@ -80,7 +80,7 @@ def vsota(resitev):
 def random_koda(dol_kode, st_stevilk):
     koda = ""
     for _ in range(1, int(dol_kode) + 1):
-        koda += str(random.randrange(st_stevilk))
+        koda += str(random.randrange(1, st_stevilk))
     return koda
 
 def sifriraj_seme(koda):
@@ -90,7 +90,7 @@ def desifriraj_seme(seme):
     return str((int(seme) - KODIRNO_ŠTEVILO_2) // KODIRNO_ŠTEVILO_1)
 
 
-def nova_igra(st_stevilk, variacija, seme = None, dol_kode = 4):
+def nova_igra(st_stevilk, variacija, seme, dol_kode):
     if seme == None:
         koda = random_koda(dol_kode, st_stevilk)
     else:
@@ -109,7 +109,7 @@ class MasterMind:
             id = random.randint()
         return id
 
-    def nova_igra(self, st_cifer, variacija = NE, seme = None, dol_kode = 4):
+    def nova_igra(self, st_cifer, variacija = NE, seme = None, dol_kode = DOL_KODE):
         i = self.prost_id_igre()
         igra = nova_igra(st_cifer, variacija, seme, dol_kode)
         self.igre[i] = (igra, ZACETEK, variacija)

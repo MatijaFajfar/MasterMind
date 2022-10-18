@@ -11,25 +11,27 @@ mastermind.nalozi_igre_iz_datoteke()
 def indeks():
     return bottle.template("views/index.tpl")
 
-@bottle.get("/seme/")
-def seme():
-    return bottle.template("views/seme.tpl")
-
 @bottle.post("/seme/")
 def seme():
     seme = bottle.request.forms.seme
     koda = bottle.request.forms.koda
-    if not seme:
-        if not koda.isnumeric() or len(koda) != model.DOL_KODE:
-            vrnjeno_seme = ''
-        else:
-            vrnjeno_seme = model.sifriraj_seme(koda)
-        return bottle.template("views/seme.tpl", {"vrnjeno_seme": vrnjeno_seme})
-    else:
+    napacno_seme = ''
+    vrnjeno_seme = ''
+    if seme and len(str(model.desifriraj_seme(seme))) == model.DOL_KODE:
         id_igre = mastermind.nova_igra(TEZKA_IGRA, model.NE, seme)
         mastermind.zapisi_igre_v_datoteko()
         bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
         return bottle.redirect("/igra/")
+    elif seme and len(str(model.desifriraj_seme(seme))) != model.DOL_KODE:
+        napacno_seme = 'Neveljavno seme, poskusi še enkrat.'
+    elif koda and koda.isnumeric() and len(koda) == model.DOL_KODE and '0' not in str(koda):
+        vrnjeno_seme = model.sifriraj_seme(koda)
+    elif not koda:
+        pass
+    else:
+        vrnjeno_seme = 'Neveljavna koda, poskusi še enkrat'
+    return bottle.template("views/seme.tpl", {"vrnjeno_seme": vrnjeno_seme, "napacno_seme": napacno_seme})
+
 
 @bottle.post("/lahka_igra/") 
 def nova_igra():
