@@ -1,4 +1,5 @@
 %rebase('base.tpl', title='MasterMind')
+<h1> Seme </h1> 
     <img src="/img/normalno.jpg" alt="2Ring">
 <h2> Ustvari seme </h2>
 <p> Tu lahko vpišeš svojo štirimestno kodo in dobiš seme, s katerim lahko prijatelja izzoveš na težko igro. 
@@ -11,6 +12,7 @@
 <p> Tu lahko vpišeš seme in zaigraš igro, katere rešitev je zašifrirana z semenom. <br>
 <form action ="" method="post">
     <input name="seme" autofocus> <input type="submit" value="Začni igro"> 
-  	<form/>
+  	<form/> <br>
+    {{napacno_seme}}
 </p>
 

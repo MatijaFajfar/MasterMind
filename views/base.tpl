@@ -6,6 +6,15 @@
  font-family: Arial;
 }
 
+body {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+h1 {
+  font-size: 30px;
+}
+
 .column {
   float: left;
   padding: 10px;

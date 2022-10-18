@@ -4,36 +4,33 @@
   box-sizing: border-box;
 }
 
-
 img {
-  width: 100%;
+  float: left;
+  margin-right: 20px;
+  width: 60%;
   height: auto;
 }
 
 .column {
   float: left;
-  padding: 10px;
+  padding: 20px;
   height: auto;
   font-size:40px
 }
 <!
 .left {
-  width: 40%;
+  width: 20%;
 }
 
 .right {
-  width: 25%;
+  float: right;
+  width: 40%;
 }
 .middle {
-  padding: 55px;
-  width: 35%;
+  width: 19%;
 }
 >
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
+
 </style>
 
 <body>
@@ -41,11 +38,11 @@ img {
 <div class="row">
   <div class="column left" style="background-color:gray;">
     <p>
-
+    <ol>
     % for poskus in poskusi:
-        {{poskus}} <br>
+        <li> {{poskus}} </li>
     % end
-
+    </ol>
     % if stanje != model.ZMAGA and stanje != model.PORAZ:
     <form action ="" method="post">
     <input name="koda" autofocus> <input type="submit" value="Ugibaj"> 
@@ -61,9 +58,11 @@ img {
     
   </div>
   <div class="column middle" style="background-color:gray;">
+    <ol>
     % for namig in namigi:
-        {{namig}} <br>
+        <li> {{namig}} </li>
     % end
+    </ol>
   </div>
   <div class="column right" style="background-color:#654321;">
     %if stanje == model.ZMAGA and len(poskusi) <= 6:
@@ -74,7 +73,7 @@ img {
       <p> Super! Uspelo ti je v {{len(poskusi)}} poskusih! Poskusi to izboljšati z igranjem še ene igre! </p>
     %elif stanje == model.PORAZ:
     <img src="/img/zalostno.jpg" alt="2Ring">
-      <p> Srce se mi para, ko vidim tak poraz. Ne krivim tebe, ampak svoje učiteljske sposobnosti. Ponovno preberi navodila, nato pa predlagam ponoven poskus. </p>
+      <p> Srce se mi para, ko vidim tak poraz. Ne krivim tebe, ampak svoje učiteljske sposobnosti. Ponovno preberi navodila, nato pa predlagam ponoven poskus. Pravilna koda je bila : {{resitev}} </p>
     %elif len(poskusi) == 3 * int(dovoljeno) // 4:
     <img src="/img/normalno.jpg" alt="2Ring">
       <p> Ne ostaja ti veliko poskusov, zato izvoli namig. Zmnožek cifer v kodi je enak {{produkt}}. </p>
@@ -83,6 +82,6 @@ img {
       <p> Moj nasvet za to rundo je tak: vsota števk v rešitvi je enaka {{vsota}}.
     %else:
     <img src="/img/normalno.jpg" alt="2Ring">
-      <p> Ne pozabi, imaš {{dovoljeno + 1}} poskusov, v rešitvi pa so številke od 0 do {{stevilke}}
+      <p> Ne pozabi, imaš {{dovoljeno + 1}} poskusov, v rešitvi pa so števke od 1 do {{stevilke}}
   </div>
 </div>
