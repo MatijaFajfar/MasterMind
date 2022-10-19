@@ -1,7 +1,7 @@
 %rebase('base.tpl', title='MasterMind')
 
 <h1> Vpis</h1>
-<img src="/img/zbegano.jpg" alt="2Ring">
+<img src="/img/zalostno.jpg" alt="2Ring">
 <p> Nisi še vpisan. Vpiši se spodaj.
 <form action="/login" method="post">
             Uporabniško ime: <input name="uporabnisko_ime" type="text" />
