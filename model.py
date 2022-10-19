@@ -13,6 +13,10 @@ NAROBE = 'X'
 KODIRNO_ŠTEVILO_1 = 5915587277
 KODIRNO_ŠTEVILO_2 = 42
 DATOTEKA_S_STANJEM = "stanje.json"
+DATOTEKA_Z_UPORABNIKI = "uporabniki.json"
+NEVELJAVNO_GESLO = "Neveljavno geslo"
+NISI_REGISTRIRAN = "To uporabniško ime še ni  zasedeno, registriraj se spodaj"
+USPESNA_PRIJAVA = "Uspešna prijava"
 ZACETEK = 'ZACETEK'
 JA = 'JA'
 NE = 'NE'
@@ -96,7 +100,57 @@ def nova_igra(st_stevilk, variacija, seme, dol_kode):
     else:
         koda = desifriraj_seme(seme)
     return Igra(koda, st_stevilk, [], [], variacija)
-    
+
+def dobro_seme(seme):
+    return len(str(desifriraj_seme(seme))) == DOL_KODE
+
+def dobra_koda(koda):
+    return koda.isnumeric() and len(koda) == DOL_KODE and '0' not in str(koda)
+
+def prost_id_igre(self):
+        id = random.randint(1000000, 9999999)
+        while id in self.igre:
+            id = random.randint()
+        return id
+
+def zasifriraj_geslo(geslo):
+    sifrirano_geslo = geslo[::-1]
+    return sifrirano_geslo
+
+def dodaj_uporabnika(uporabnisko_ime, geslo):
+    with open(DATOTEKA_Z_UPORABNIKI) as d:
+        slovar = json.load(d)
+    sifrirano_geslo = zasifriraj_geslo(geslo)
+    slovar[uporabnisko_ime] = (sifrirano_geslo, 0, 0, 0, 0, [])
+    with open(DATOTEKA_Z_UPORABNIKI, 'w') as d:
+        json.dump(slovar, d)
+    return uporabnisko_ime
+
+def je_uporabnik(uporabnisko_ime, uporabnikovo_geslo):
+    with open(DATOTEKA_Z_UPORABNIKI) as d:
+        slovar = json.load(d)
+    for ime, (geslo, _, _, _, _, _) in slovar.items():
+        if ime == uporabnisko_ime and uporabnikovo_geslo == zasifriraj_geslo(geslo):
+            return USPESNA_PRIJAVA
+        elif ime == uporabnisko_ime and uporabnikovo_geslo != zasifriraj_geslo(geslo):
+            return NEVELJAVNO_GESLO
+    return NISI_REGISTRIRAN
+
+def dodaj_nove_uporabnikove_podatke(uporabnisko_ime, nove_igrane_igre = 1, nove_zmage = 0, novi_porazi = 0, novo_povprecje = 0, novi_izzivi = False):
+    with open(DATOTEKA_Z_UPORABNIKI) as d:
+        slovar = json.load(d)
+        (geslo, igre, zmage, porazi, povprecje, izzivi) = slovar[uporabnisko_ime]
+        slovar[uporabnisko_ime] = (geslo, igre + nove_igrane_igre, zmage + nove_zmage, porazi + novi_porazi, povprecje + novo_povprecje, izzivi.extend(novi_izzivi))
+    with open(DATOTEKA_Z_UPORABNIKI, 'w') as d:
+        json.dump(slovar, d)
+    return None
+
+def preberi_uporabnika(uporabnisko_ime):
+    with open(DATOTEKA_Z_UPORABNIKI) as d:
+        slovar = json.load(d)
+    return slovar[uporabnisko_ime]
+
+
 class MasterMind:
     datoteka_s_stanjem = DATOTEKA_S_STANJEM
 
