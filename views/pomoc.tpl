@@ -20,5 +20,9 @@
      vpišeš kodo za prijatelja, in jo zašifriraš. Ko to šifro poveš prijatelju, jo lahko vpiše v nižje okence in začne igrati igro,
      ki ima za rešitev tvojo kodo.</p>
 
+<h1> Profili </h1>
+<p> Res nadobudni kriptografi si lahko naredite profil, kjer bo beleženo, kako dobro vam gre igra, če pa poznaš prijateljevo uporabniško ime,
+    mu lahko pošlješ kak izziv. Če te to zanima, skoči na zavihek profil in se registriraj!
+
 <p> Vso srečo! </p>
 
