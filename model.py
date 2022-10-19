@@ -139,12 +139,16 @@ def je_uporabnik(uporabnisko_ime, uporabnikovo_geslo):
 def dodaj_nove_podatke(uporabnisko_ime, nove_igrane_igre = 1, nove_zmage = 0, novi_porazi = 0, dodatne_tocke = 0, novi_izzivi = []):
     with open(DATOTEKA_Z_UPORABNIKI, encoding='utf8') as d:
         slovar = json.load(d)
-        (geslo, igre, zmage, porazi, povprecje, izzivi) = slovar[uporabnisko_ime]
+        (geslo, igre, zmage, porazi, povprecje, izzivi) = slovar.get(uporabnisko_ime)
         if zmage + nove_zmage > 0:
             novo_povprecje = ((povprecje * zmage) + dodatne_tocke) / (zmage + nove_zmage)
         else:
             novo_povprecje = 0
-        slovar[uporabnisko_ime] = (geslo, igre + nove_igrane_igre, zmage + nove_zmage, porazi + novi_porazi, novo_povprecje, izzivi + [tuple(novi_izzivi)])
+        if novi_izzivi == []:
+            pass
+        else:
+            novi_izzivi = [tuple(novi_izzivi)]
+        slovar[uporabnisko_ime] = (geslo, igre + nove_igrane_igre, zmage + nove_zmage, porazi + novi_porazi, novo_povprecje, izzivi + novi_izzivi)
     with open(DATOTEKA_Z_UPORABNIKI, 'w', encoding='utf8') as d:
         json.dump(slovar, d)
     return None
