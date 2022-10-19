@@ -26,6 +26,21 @@ h1 {
   width: 40%;
 }
 
+button {
+    background-color: #04AA6D; 
+  border: 1px solid green;
+  color: white;
+  padding: 10px 24px;
+  cursor: pointer;
+  float: left;
+}
+
+input {
+    background-color: #04AA6D; 
+  border: 1px solid green;
+
+}
+
 .right {
   width: 25%;
 }

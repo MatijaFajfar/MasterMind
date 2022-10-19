@@ -26,17 +26,21 @@ Tu lahko najdeš podatke o svojih igrah, igraš izzive in pošiljaš izzive drug
         <form action="/brisi_izziv/<{{seme}}>/<{{uporabnik}}/" method="post">
             <button type="submit">Izbriši izziv</button>
         </form>
+        <br>
         </li>
     </ul>
     %end
 %end
-
+<br>
 <h2> Pošlji izziv </h2>
 <p>
 <form action="/poslji_izziv/" method="post">
-            Uporabniško ime: <input name="uporabnisko_ime" type="text" />
-            Koda: <input name="koda" type="text" />
+            Uporabniško ime: <br>
+            <input name="uporabnisko_ime" type="text" /> <br>
+            Koda: <br>
+            <input name="koda" type="text" /> <br> <br>
             <input value="Pošlji izziv" type="submit" />
         </form> 
+<br>
 {{napaka}}
 </p>
