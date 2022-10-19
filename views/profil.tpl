@@ -2,7 +2,7 @@
 
 <h1> Profil </h1>
 <img src="/img/Normalno.jpg" alt="2Ring">
-<p> Živjo, {{uporabnisko_ime}}! <br>
+<p> Živijo, {{uporabnisko_ime}}! <br>
 Tu lahko najdeš podatke o svojih igrah, igraš izzive in pošiljaš izzive drugim uporabnikom.
 <h2> Podatki </h1>
 <ul>
@@ -16,13 +16,18 @@ Tu lahko najdeš podatke o svojih igrah, igraš izzive in pošiljaš izzive drug
 %if izzivi == []:
     <p> Izgleda, da še nisi prejel nobenega izziva. </p>
 %else:
-    for (uporabnik, seme) in izzivi:
+    %for (uporabnik, seme) in izzivi:
     <ul>
-        <li> {{uporabnik}} ti je poslal to seme: 
-            <form action="/seme/<{{seme}}>/" method="post">
-                <button type="submit">Igraj</button>
-            </form>
+    <br>
+        <li> {{uporabnik}} ti je poslal ta izziv: 
+        <form action="/seme/<{{seme}}>" method="post">
+            <button type="submit">Igraj</button>
+        </form>
+        <form action="/seme/<{{seme}}>" method="post">
+            <button type="submit">Igraj</button>
+        </form>
         </li>
+    </ul>
 %end
 
 <h2> Pošlji izziv </h2>

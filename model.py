@@ -118,7 +118,7 @@ def zasifriraj_geslo(geslo):
     return sifrirano_geslo
 
 def dodaj_uporabnika(uporabnisko_ime, geslo):
-    with open(DATOTEKA_Z_UPORABNIKI) as d:
+    with open(DATOTEKA_Z_UPORABNIKI, encoding='utf8') as d:
         slovar = json.load(d)
     sifrirano_geslo = zasifriraj_geslo(geslo)
     slovar[uporabnisko_ime] = (sifrirano_geslo, 0, 0, 0, 0, [])
@@ -127,7 +127,7 @@ def dodaj_uporabnika(uporabnisko_ime, geslo):
     return uporabnisko_ime
 
 def je_uporabnik(uporabnisko_ime, uporabnikovo_geslo):
-    with open(DATOTEKA_Z_UPORABNIKI) as d:
+    with open(DATOTEKA_Z_UPORABNIKI, encoding='utf8') as d:
         slovar = json.load(d)
     for ime, (geslo, _, _, _, _, _) in slovar.items():
         if ime == uporabnisko_ime and uporabnikovo_geslo == zasifriraj_geslo(geslo):
@@ -136,17 +136,21 @@ def je_uporabnik(uporabnisko_ime, uporabnikovo_geslo):
             return NEVELJAVNO_GESLO
     return NISI_REGISTRIRAN
 
-def dodaj_nove_uporabnikove_podatke(uporabnisko_ime, nove_igrane_igre = 1, nove_zmage = 0, novi_porazi = 0, novo_povprecje = 0, novi_izzivi = False):
-    with open(DATOTEKA_Z_UPORABNIKI) as d:
+def dodaj_nove_podatke(uporabnisko_ime, nove_igrane_igre = 1, nove_zmage = 0, novi_porazi = 0, dodatne_tocke = 0, novi_izzivi = []):
+    with open(DATOTEKA_Z_UPORABNIKI, encoding='utf8') as d:
         slovar = json.load(d)
         (geslo, igre, zmage, porazi, povprecje, izzivi) = slovar[uporabnisko_ime]
-        slovar[uporabnisko_ime] = (geslo, igre + nove_igrane_igre, zmage + nove_zmage, porazi + novi_porazi, povprecje + novo_povprecje, izzivi.extend(novi_izzivi))
+        if zmage + nove_zmage > 0:
+            novo_povprecje = ((povprecje * zmage) + dodatne_tocke) / (zmage + nove_zmage)
+        else:
+            novo_povprecje = 0
+        slovar[uporabnisko_ime] = (geslo, igre + nove_igrane_igre, zmage + nove_zmage, porazi + novi_porazi, novo_povprecje, izzivi + [tuple(novi_izzivi)])
     with open(DATOTEKA_Z_UPORABNIKI, 'w', encoding='utf8') as d:
         json.dump(slovar, d)
     return None
 
 def preberi_uporabnika(uporabnisko_ime):
-    with open(DATOTEKA_Z_UPORABNIKI) as d:
+    with open(DATOTEKA_Z_UPORABNIKI, encoding='utf8') as d:
         slovar = json.load(d)
     return slovar[uporabnisko_ime]
 

@@ -36,8 +36,9 @@ def seme():
         vrnjeno_seme = 'Neveljavna koda, poskusi še enkrat'
     return bottle.template("views/seme.tpl", {"vrnjeno_seme": vrnjeno_seme, "napacno_seme": napacno_seme})
 
-bottle.post("/seme/<seme>/")
+@bottle.post("/seme/<seme:re:.*>")
 def igraj_seme(seme):
+    seme = seme[1:-1]
     id_igre = mastermind.nova_igra(TEZKA_IGRA, model.NE, seme)
     mastermind.zapisi_igre_v_datoteko()
     bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
@@ -147,7 +148,9 @@ def registracija():
 def poslji_izziv():
     uporabnisko_ime = bottle.request.forms.uporabnisko_ime
     koda = bottle.request.forms.koda
-    izziv = (uporabnisko_ime, koda)
+    seme = model.sifriraj_seme(koda)
+    ime_poslijatelja = bottle.request.get_cookie('uporabnisko_ime', secret = SKRIVNOST)
+    izziv = (ime_poslijatelja, seme)
     if model.je_uporabnik(uporabnisko_ime, '') == model.NEVELJAVNO_GESLO and model.dobra_koda(koda):
         model.dodaj_nove_podatke(uporabnisko_ime, 0, 0, 0, 0, izziv)
         napaka = IZZIV_USPEL
