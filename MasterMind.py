@@ -108,6 +108,11 @@ def pokazi_igro():
     stevilke = igra.stevilke
     produkt = igra.produkt
     vsota = igra.vsota
+    uporabnisko_ime = bottle.request.get_cookie('uporabnisko_ime', secret = SKRIVNOST)
+    if stanje == model.ZMAGA and uporabnisko_ime:
+        model.dodaj_nove_podatke(uporabnisko_ime, 1, 1, 0, len(poskusi))
+    elif stanje == model.PORAZ and uporabnisko_ime:
+        model.dodaj_nove_podatke(uporabnisko_ime, 1, 0, 1)
     return bottle.template("views/igra.tpl", {'resitev': resitev,'stanje': stanje,'model': model, 'poskusi': poskusi, 'namigi': namigi, 'dovoljeno': dovoljeno, 'stevilke': stevilke, 'produkt': produkt, 'vsota': vsota, 'variacija': variacija}) 
 
 @bottle.post("/igra/")
