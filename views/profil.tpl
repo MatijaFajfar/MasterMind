@@ -23,11 +23,12 @@ Tu lahko najdeš podatke o svojih igrah, igraš izzive in pošiljaš izzive drug
         <form action="/seme/<{{seme}}>" method="post">
             <button type="submit">Igraj</button>
         </form>
-        <form action="/seme/<{{seme}}>" method="post">
-            <button type="submit">Igraj</button>
+        <form action="/brisi_izziv/<{{seme}}>/<{{uporabnik}}/" method="post">
+            <button type="submit">Izbriši izziv</button>
         </form>
         </li>
     </ul>
+    %end
 %end
 
 <h2> Pošlji izziv </h2>

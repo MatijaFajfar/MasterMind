@@ -44,6 +44,16 @@ def igraj_seme(seme):
     bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
     return bottle.redirect("/igra/")
 
+@bottle.post("/brisi_izziv/<seme:re:.*>/<izzivalec:re:.*>/")
+def brisi_izziv(seme, izzivalec):
+    uporabnisko_ime = bottle.request.get_cookie('uporabnisko_ime', secret = SKRIVNOST)
+    izzivalec = izzivalec[1:]
+    seme = seme[1:-1]
+    print(izzivalec)
+    print(seme)
+    model.brisi_izziv(uporabnisko_ime, seme, izzivalec)
+    return bottle.redirect("/profil/")
+
 
 @bottle.post("/lahka_igra/") 
 def nova_igra():

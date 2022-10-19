@@ -154,6 +154,17 @@ def preberi_uporabnika(uporabnisko_ime):
         slovar = json.load(d)
     return slovar[uporabnisko_ime]
 
+def brisi_izziv(uporabnisko_ime, seme, izzivalec):
+    with open(DATOTEKA_Z_UPORABNIKI, encoding='utf8') as d:
+        slovar = json.load(d)
+        (geslo, igre, zmage, porazi, povprecje, izzivi) = slovar[uporabnisko_ime]
+        izzivi.remove(list((izzivalec, int(seme))))
+        slovar[uporabnisko_ime] = (geslo, igre, zmage, porazi, povprecje, izzivi)
+    with open(DATOTEKA_Z_UPORABNIKI, 'w', encoding='utf8') as d:
+        json.dump(slovar, d)
+    return None
+
+
 
 class MasterMind:
     datoteka_s_stanjem = DATOTEKA_S_STANJEM
