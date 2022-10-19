@@ -12,7 +12,7 @@ Tu lahko najdeš podatke o svojih igrah, igraš izzive in pošiljaš izzive drug
     <li> Povprečno število poskusov do zmage: {{povprecje}} </li>
 </ul>
 
-<h2> Izzivi </h2>
+<h2> Tvoji izzivi </h2>
 %if izzivi == []:
     <p> Izgleda, da še nisi prejel nobenega izziva. </p>
 %else:
@@ -24,3 +24,13 @@ Tu lahko najdeš podatke o svojih igrah, igraš izzive in pošiljaš izzive drug
             </form>
         </li>
 %end
+
+<h2> Pošlji izziv </h2>
+<p>
+<form action="/poslji_izziv/" method="post">
+            Uporabniško ime: <input name="uporabnisko_ime" type="text" />
+            Koda: <input name="koda" type="text" />
+            <input value="Pošlji izziv" type="submit" />
+        </form> 
+{{napaka}}
+</p>
