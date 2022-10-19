@@ -122,7 +122,7 @@ def dodaj_uporabnika(uporabnisko_ime, geslo):
         slovar = json.load(d)
     sifrirano_geslo = zasifriraj_geslo(geslo)
     slovar[uporabnisko_ime] = (sifrirano_geslo, 0, 0, 0, 0, [])
-    with open(DATOTEKA_Z_UPORABNIKI, 'w') as d:
+    with open(DATOTEKA_Z_UPORABNIKI, 'w', encoding='utf8') as d:
         json.dump(slovar, d)
     return uporabnisko_ime
 
@@ -141,7 +141,7 @@ def dodaj_nove_uporabnikove_podatke(uporabnisko_ime, nove_igrane_igre = 1, nove_
         slovar = json.load(d)
         (geslo, igre, zmage, porazi, povprecje, izzivi) = slovar[uporabnisko_ime]
         slovar[uporabnisko_ime] = (geslo, igre + nove_igrane_igre, zmage + nove_zmage, porazi + novi_porazi, povprecje + novo_povprecje, izzivi.extend(novi_izzivi))
-    with open(DATOTEKA_Z_UPORABNIKI, 'w') as d:
+    with open(DATOTEKA_Z_UPORABNIKI, 'w', encoding='utf8') as d:
         json.dump(slovar, d)
     return None
 
@@ -184,7 +184,7 @@ class MasterMind:
         slovar = {}
         for id_igre, (igra, stanje, variacija) in self.igre.items():
             slovar[id_igre] = ((igra.resitev, igra.poskusi), igra.namigi, igra.stevilke, igra.dovoljeno, variacija, stanje)
-        with open(self.datoteka_s_stanjem, 'w') as d:
+        with open(self.datoteka_s_stanjem, 'w', encoding='utf8') as d:
             json.dump(slovar, d)
 
 
