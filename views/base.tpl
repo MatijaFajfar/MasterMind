@@ -84,6 +84,10 @@ h1 {
     <form action="/pomoc/" method="post">
       <button type="submit">Pomoč</button>
       </form>
+
+    <form action="/profil/" method="get">
+      <button type="submit">Profil</button>
+      </form>
   </div>
 
 </div> 
