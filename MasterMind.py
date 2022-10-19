@@ -3,6 +3,7 @@ import bottle, model
 SKRIVNOST = 'Bruce Wayne je Batman'
 LAHKA_IGRA = 6
 TEZKA_IGRA = 9
+IME_JE_ZE_V_UPORABI = 'To uporabnisko ime je že v uporabi, izberi si drugega'
 
 mastermind = model.MasterMind()
 mastermind.nalozi_igre_iz_datoteke()
@@ -17,20 +18,27 @@ def seme():
     koda = bottle.request.forms.koda
     napacno_seme = ''
     vrnjeno_seme = ''
-    if seme and len(str(model.desifriraj_seme(seme))) == model.DOL_KODE:
+    if seme and model.dobro_seme(seme):
         id_igre = mastermind.nova_igra(TEZKA_IGRA, model.NE, seme)
         mastermind.zapisi_igre_v_datoteko()
         bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
         return bottle.redirect("/igra/")
-    elif seme and len(str(model.desifriraj_seme(seme))) != model.DOL_KODE:
+    elif seme and not model.dobro_seme(seme):
         napacno_seme = 'Neveljavno seme, poskusi še enkrat.'
-    elif koda and koda.isnumeric() and len(koda) == model.DOL_KODE and '0' not in str(koda):
+    elif koda and model.dobra_koda(koda):
         vrnjeno_seme = model.sifriraj_seme(koda)
     elif not koda:
         pass
     else:
         vrnjeno_seme = 'Neveljavna koda, poskusi še enkrat'
     return bottle.template("views/seme.tpl", {"vrnjeno_seme": vrnjeno_seme, "napacno_seme": napacno_seme})
+
+bottle.post("/seme/<seme>/")
+def igraj_seme(seme):
+    id_igre = mastermind.nova_igra(TEZKA_IGRA, model.NE, seme)
+    mastermind.zapisi_igre_v_datoteko()
+    bottle.response.set_cookie('id_igre', id_igre, path='/', secret = SKRIVNOST)
+    return bottle.redirect("/igra/")
 
 
 @bottle.post("/lahka_igra/") 
@@ -84,9 +92,53 @@ def ugibaj():
         mastermind.ugibaj(id_igre, koda)
     mastermind.zapisi_igre_v_datoteko()
     return bottle.redirect("/igra/")
+ #####
 
-@bottle.get("/img/<picture>")
-def slika(picture):
-    return bottle.static_file(picture, root="img")
+@bottle.get("/profil/")
+def profil():
+    uporabnisko_ime = bottle.request.get_cookie('uporabnisko_ime', secret = SKRIVNOST)
+    if uporabnisko_ime:
+        (_, vse_igre, zmage, porazi, povprecje, izzivi) = model.preberi_uporabnika(uporabnisko_ime)
+        return bottle.template("views/profil.tpl", {'uporabnisko_ime': uporabnisko_ime, 'vse_igre': vse_igre, 'zmage': zmage, 'porazi': porazi, 'povprecje': povprecje, 'izzivi': izzivi})
+    else:
+        return bottle.redirect("/vpis/")
+
+@bottle.get("/vpis/")
+def vpis():
+    napaka = ''
+    return bottle.template("views/vpis.tpl", {'napaka': napaka})
+
+@bottle.post("/login")
+def do_login():
+    uporabnisko_ime = bottle.request.forms.get('uporabnisko_ime')
+    geslo = bottle.request.forms.get('geslo')
+    stanje_uporabnika = model.je_uporabnik(uporabnisko_ime, geslo)
+    if stanje_uporabnika == model.USPESNA_PRIJAVA:
+        bottle.response.set_cookie('uporabnisko_ime', uporabnisko_ime, path='/', secret = SKRIVNOST)
+        return bottle.redirect("/profil/")
+    elif stanje_uporabnika == model.NEVELJAVNO_GESLO:
+        return bottle.template("views/vpis.tpl", {'napaka': stanje_uporabnika})
+    else:
+        return bottle.template("views/vpis.tpl", {'napaka': stanje_uporabnika})
+
+@bottle.get("/registracija/")
+def registracija():
+    napaka = ''
+    return bottle.template("views/registracija.tpl", {'napaka': napaka})
+
+@bottle.post("/registracija/")
+def registracija():
+    uporabnisko_ime = bottle.request.forms.uporabnisko_ime
+    geslo = bottle.request.forms.geslo
+    if not uporabnisko_ime:
+        napaka = ''
+        return bottle.template("views/registracija.tpl", {'napaka': napaka})
+    elif model.je_uporabnik(uporabnisko_ime, geslo) != model.NISI_REGISTRIRAN:
+        return bottle.template("views/registracija.tpl", {'napaka' : IME_JE_ZE_V_UPORABI})
+    else:
+        uporabnisko_ime = model.dodaj_uporabnika(uporabnisko_ime, geslo)
+        bottle.response.set_cookie('uporabnisko_ime', uporabnisko_ime, path='/', secret = SKRIVNOST)
+        return bottle.redirect("/profil/")
+
 
 bottle.run(reloader = True, debug = True)
