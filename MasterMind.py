@@ -188,7 +188,11 @@ def poslji_izziv():
         return bottle.redirect(f"/profil/{napaka}")
     elif not model.dobra_koda(koda):
         napaka = NEVELJAVNA_KODA
-        return bottle.redirect(f"/profil/{napaka}")        
+        return bottle.redirect(f"/profil/{napaka}")  
+
+@bottle.get("/img/<picture>")
+def slika(picture):
+    return bottle.static_file(picture, root="img")      
     
 
 bottle.run(reloader = True, debug = True)
