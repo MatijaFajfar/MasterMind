@@ -58,13 +58,17 @@ class Igra:
 
 def namig(resitev, poskus):
     namig = ""
+    pomozni_niz = ''
     for n in range(len(str(resitev))):
         if str(resitev)[n] == poskus[n]:
             namig += PRAV
-        elif poskus[n] in resitev and resitev[n] != poskus[n]:
+            pomozni_niz += poskus[n]
+        elif poskus[n] in resitev and pomozni_niz.count(poskus[n]) < resitev.count(poskus[n]):
             namig += SKORAJ
+            pomozni_niz += poskus[n]
         else:
             namig += NAROBE
+            pomozni_niz += poskus[n]
     sortiran_namig = sorted(namig)
     sortiran_namig = ' '.join(sortiran_namig)
     return sortiran_namig
